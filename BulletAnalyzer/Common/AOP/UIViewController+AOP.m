@@ -33,10 +33,16 @@
         } else if ([aspectInfo.instance isKindOfClass:[UIAlertController class]]) {
             
             
+        } else if ([aspectInfo.instance isKindOfClass:[UIInputViewController class]]) {
+            
+            
+        } else if ([aspectInfo.instance isKindOfClass:NSClassFromString(@"_UIRemoteInputViewController")]) {
+            
+            
         } else if ([aspectInfo.instance isKindOfClass:[BAReportViewController class]]) {
             
             
-        } else  {
+        } else {
             
             UIViewController *viewContoller = (UIViewController *)aspectInfo.instance;
             

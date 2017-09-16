@@ -86,11 +86,15 @@
     self.title = @"连接中...";
     
     [self larger];
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
 
 
 - (void)dealloc{
     [BANotificationCenter removeObserver:self];
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 

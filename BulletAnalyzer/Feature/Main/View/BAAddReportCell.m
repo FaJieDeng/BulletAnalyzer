@@ -28,6 +28,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 @property (nonatomic, strong) BARoomModel *roomModel;
 @property (nonatomic, strong) UIImageView *icon;
 @property (nonatomic, strong) UILabel *previewLabel;
+@property (nonatomic, assign, getter=isPreview) BOOL preview;
 
 @end
 
@@ -86,6 +87,11 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 - (void)previewTapped{
     [_roomNumField becomeFirstResponder];
+    if (self.isPreview) {
+        _roomNumField.text = @"";
+        _roomModel = nil;
+        [self hidePreview];
+    }
 }
 
 
@@ -203,6 +209,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 - (void)showPreview{
+    self.preview = YES;
     _previewLabel.text = _roomModel.owner_name;
     [_icon sd_setImageWithURL:[NSURL URLWithString:_roomModel.avatar] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
        [UIView animateWithDuration:0.5 animations:^{
@@ -215,6 +222,7 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
 
 
 - (void)hidePreview{
+    self.preview = NO;
     [UIView animateWithDuration:0.5 animations:^{
         _icon.alpha = 0;
         _previewLabel.alpha = 0;
