@@ -52,8 +52,13 @@ static NSString *const BASearchHistoryCellReusedId = @"BASearchHistoryCellReused
         [_roomNumField resignFirstResponder];
     }
     
-    if (!_roomModel) {
+    if (!_roomNumField.text.length) {
         [BATool showHUDWithText:@"请输入房间号" ToView:self];
+        return;
+    }
+    
+    if (!_roomModel) {
+        [BATool showHUDWithText:@"正在搜索房间" ToView:self];
         return;
     }
     
