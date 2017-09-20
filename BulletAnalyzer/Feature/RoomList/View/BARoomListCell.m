@@ -74,7 +74,7 @@
     _roomNameLabel = [UILabel labelWithFrame:_screenShotImgView.bounds text:nil color:BAWhiteColor font:BACommonFont(16) textAlignment:NSTextAlignmentCenter];
     _roomNameLabel.numberOfLines = 2;
     
-    [_beffectView addSubview:_roomNameLabel];
+    [_bgView addSubview:_roomNameLabel];
     
     _titileBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, 15)];
     _titileBgView.image = [UIImage imageNamed:@"titileBgView"];
@@ -93,6 +93,7 @@
     CGFloat alpha = effectHidden ? 0 : 1;
     [UIView animateWithDuration:0.8f delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _beffectView.alpha = alpha;
+        _roomNameLabel.alpha = alpha;
     } completion:nil];
 }
 
