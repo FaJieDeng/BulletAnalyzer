@@ -487,8 +487,11 @@
 
 
 - (void)setupPopView{
+    
+    CGFloat topPadding = Screen58inch ? 88 : 64;
+    
     WeakObj(self);
-    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, 64, 100, 140) titles:@[@" 全部弹幕", @" 高级弹幕", @" 全部礼物", @" 高级礼物"]];
+    _filterPopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(BAScreenWidth - 100, topPadding, 100, 140) titles:@[@" 全部弹幕", @" 高级弹幕", @" 全部礼物", @" 高级礼物"]];
     _filterPopView.multipleEnable = YES;
     [_filterPopView clickBtn:0];
     [_filterPopView clickBtn:2];
@@ -551,7 +554,7 @@
     
     [self.view addSubview:_filterPopView];
     
-    _linePopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(0, 64, 100, 70) titles:@[@" 线路一", @" 线路二"]];
+    _linePopView = [BABulletListNavPopView popViewWithFrame:CGRectMake(0, topPadding, 100, 70) titles:@[@" 线路一", @" 线路二"]];
     _linePopView.multipleEnable = NO;
     [_linePopView clickBtn:1];
     _linePopView.alpha = 0;

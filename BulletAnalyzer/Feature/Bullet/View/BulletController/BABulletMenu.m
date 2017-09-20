@@ -130,7 +130,6 @@
     
     [self addSubview:_leftBtnLabel];
     
-    
     _middleBtn = [UIButton buttonWithFrame:CGRectMake(BAScreenWidth / 2 - 55, -20, middleBtnWidth, 69) title:nil color:nil font:nil backgroundImage:[UIImage imageNamed:@"middleBtnBgImg"] target:self action:@selector(btnClicked:)];
     _middleBtn.tag = 1;
     _middleBtn.adjustsImageWhenHighlighted = NO;
@@ -142,8 +141,8 @@
     
     [self addSubview:_addImgView];
     
-
     _middleBtnLabel = [UILabel labelWithFrame:CGRectMake(_middleBtn.x, _leftBtnLabel.y, _middleBtn.width, 16) text:@"工具" color:BAColor(211, 133, 211) font:BABlodFont(BASmallTextFontSize) textAlignment:NSTextAlignmentCenter];
+    _middleBtnLabel.hidden = Screen58inch;
     
     [self addSubview:_middleBtnLabel];
     
