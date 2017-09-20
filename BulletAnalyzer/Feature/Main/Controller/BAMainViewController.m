@@ -196,7 +196,9 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"d";
     
-    _dayLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, 64 + BAPadding, BAScreenWidth, 40) text:[formatter stringFromDate:nowDate] color:BAWhiteColor font:BABlodFont(44) textAlignment:NSTextAlignmentLeft];
+    CGFloat topPadding = Screen58inch ? 84 + BAPadding : 64 + BAPadding;
+    
+    _dayLabel = [UILabel labelWithFrame:CGRectMake(2 * BAPadding, topPadding, BAScreenWidth, 40) text:[formatter stringFromDate:nowDate] color:BAWhiteColor font:BABlodFont(44) textAlignment:NSTextAlignmentLeft];
     [_dayLabel sizeToFit];
     
     [self.view addSubview:_dayLabel];
@@ -222,7 +224,10 @@
 
 
 - (void)setupReportView{
-    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, _dayLabel.bottom + 5 * BAPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
+    
+    CGFloat topPadding = Screen58inch ? _dayLabel.bottom + 9 * BAPadding : _dayLabel.bottom + 5 * BAPadding;
+    
+    _reportView = [[BAReportView alloc] initWithFrame:CGRectMake(0, topPadding, BAScreenWidth, BAScreenHeight * 4 / 5)];
     
     [self.view addSubview:_reportView];
 }

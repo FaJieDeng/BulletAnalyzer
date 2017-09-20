@@ -49,7 +49,7 @@
             CALayer *bgLayer = [CALayer layer];
             bgLayer.frame = viewContoller.view.bounds;
             bgLayer.contents = (id)[UIImage imageNamed:@"backgroundView"].CGImage;
-            [viewContoller.view.layer addSublayer:bgLayer];
+            [viewContoller.view.layer addSublayer:bgLayer]; 
         }
         
     } error:NULL];

@@ -51,8 +51,13 @@
 #define BAReportFansChartPartWidth (BAReportCountChartWidth - 2 * BAPadding)
 #define BAReportFansChartPartHeight (BAReportWordsChartHeight / 3)
 
-#define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
+#ifdef Screen58inch
+#define BAReportCellHeight (BAScreenHeight * 2.8 / 5)
+#else
 #define BAReportCellHeight (BAScreenHeight * 3 / 5)
+#endif
+
+#define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
 #define BABulletListCellHeight 80
 #define BABulletSettingHeight 90
 #define BABulletMenuHeight 49
