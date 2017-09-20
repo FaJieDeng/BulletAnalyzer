@@ -146,9 +146,11 @@
     
     [_bubbleImgView.layer addAnimation:rotationAnimation forKey:nil];
     
+    CGFloat bottomPadding = Screen58inch ? 9 * BAPadding : 4 * BAPadding;
+    
     _phoneWidth = 0.71 * BAScreenWidth;
     _phoneHeight = _phoneWidth * 996 / 497;
-    _phoneImgView = [UIImageView imageViewWithFrame:CGRectMake(BAScreenWidth / 2 - _phoneWidth / 2, BAScreenHeight - 4 * BAPadding - _phoneHeight, _phoneWidth, _phoneHeight) image:[UIImage imageNamed:@"guidePhone"]];
+    _phoneImgView = [UIImageView imageViewWithFrame:CGRectMake(BAScreenWidth / 2 - _phoneWidth / 2, BAScreenHeight - bottomPadding - _phoneHeight, _phoneWidth, _phoneHeight) image:[UIImage imageNamed:@"guidePhone"]];
     
     [self.view addSubview:_phoneImgView];
     
@@ -194,7 +196,9 @@
     }
     _page3Ads = temp3Array;
     
-    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, 3 * BAPadding, BAScreenWidth, 28) text:@"房间搜索" color:BAWhiteColor font:BABlodFont(22) textAlignment:NSTextAlignmentCenter];
+    CGFloat topPadding = Screen58inch ? 9 * BAPadding : 3 * BAPadding;
+    
+    _titleLabel = [UILabel labelWithFrame:CGRectMake(0, topPadding, BAScreenWidth, 28) text:@"房间搜索" color:BAWhiteColor font:BABlodFont(22) textAlignment:NSTextAlignmentCenter];
     
     [self.view addSubview:_titleLabel];
     

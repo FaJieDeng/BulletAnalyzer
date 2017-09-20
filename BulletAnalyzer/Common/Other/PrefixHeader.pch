@@ -25,6 +25,8 @@
 #define Screen47inch ([UIScreen mainScreen].bounds.size.height == 667)
 //判断是否为5.5inch
 #define Screen55inch ([UIScreen mainScreen].bounds.size.height == 736)
+//判断是否为5.8inch
+#define Screen58inch ([UIScreen mainScreen].bounds.size.height == 812)
 
 //弧度转角度
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
