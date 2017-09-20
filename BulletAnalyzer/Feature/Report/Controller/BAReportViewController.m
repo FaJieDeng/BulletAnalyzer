@@ -285,7 +285,10 @@
 
 
 - (void)setupInfoView{
-    _infoView = [[BAInfoView alloc] initWithFrame:CGRectMake(0, 64 + 4 * BAPadding, BAScreenWidth, BAScreenWidth / 3)];
+    
+    CGFloat topPadding = Screen58inch ? 64 + 9 * BAPadding : 64 + 4 * BAPadding;
+    
+    _infoView = [[BAInfoView alloc] initWithFrame:CGRectMake(0, topPadding, BAScreenWidth, BAScreenWidth / 3)];
     _infoView.reportModel = _reportModel;
     
     [_scrollView addSubview:_infoView];
