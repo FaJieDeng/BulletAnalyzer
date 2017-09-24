@@ -9,6 +9,7 @@
 
 #import "BATool.h"
 #import "MBProgressHUD.h"
+#import "GiFHUD.h"
 #import "Lottie.h"
 
 @implementation BATool
@@ -132,7 +133,7 @@ void ProviderReleaseData (void *info, const void *data, size_t size){
 }
 
 
-+ (UIImage *)captureScreen:(UIView *)viewToCapture{
++ (UIImage *)captureScreen:(UIView *)viewToCapture {
     UIGraphicsBeginImageContextWithOptions(viewToCapture.bounds.size, YES, [UIScreen mainScreen].scale);
     [viewToCapture.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
