@@ -9,7 +9,6 @@
 
 #import "BATool.h"
 #import "MBProgressHUD.h"
-#import "GiFHUD.h"
 #import "Lottie.h"
 
 @implementation BATool

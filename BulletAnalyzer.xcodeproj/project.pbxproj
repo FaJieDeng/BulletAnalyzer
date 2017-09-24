@@ -123,7 +123,6 @@
 		F2873E3A1F3C451C00C8DCD7 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F2873CEF1F3C451C00C8DCD7 /* FMDatabaseQueue.m */; };
 		F2873E3B1F3C451C00C8DCD7 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F2873CF21F3C451C00C8DCD7 /* FMResultSet.m */; };
 		F2873E3C1F3C451C00C8DCD7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2873CF31F3C451C00C8DCD7 /* Info.plist */; };
-		F2873E3D1F3C451C00C8DCD7 /* GiFHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F2873CF61F3C451C00C8DCD7 /* GiFHUD.m */; };
 		F2873E3E1F3C451C00C8DCD7 /* iosjieba.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F2873D181F3C451C00C8DCD7 /* iosjieba.bundle */; };
 		F2873E3F1F3C451C00C8DCD7 /* Segmentor.mm in Sources */ = {isa = PBXBuildFile; fileRef = F2873D1A1F3C451C00C8DCD7 /* Segmentor.mm */; };
 		F2873E401F3C451C00C8DCD7 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = F2873D1D1F3C451C00C8DCD7 /* .gitkeep */; };
@@ -475,8 +474,6 @@
 		F2873CF11F3C451C00C8DCD7 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		F2873CF21F3C451C00C8DCD7 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		F2873CF31F3C451C00C8DCD7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F2873CF51F3C451C00C8DCD7 /* GiFHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiFHUD.h; sourceTree = "<group>"; };
-		F2873CF61F3C451C00C8DCD7 /* GiFHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiFHUD.m; sourceTree = "<group>"; };
 		F2873CF91F3C451C00C8DCD7 /* DictTrie.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DictTrie.hpp; sourceTree = "<group>"; };
 		F2873CFA1F3C451C00C8DCD7 /* FullSegment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FullSegment.hpp; sourceTree = "<group>"; };
 		F2873CFB1F3C451C00C8DCD7 /* HMMSegment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HMMSegment.hpp; sourceTree = "<group>"; };
@@ -1361,7 +1358,6 @@
 				F2873CC61F3C451C00C8DCD7 /* Aspects */,
 				F2873CC91F3C451C00C8DCD7 /* CocoaAsyncSocket */,
 				F2873CE71F3C451C00C8DCD7 /* FMDB */,
-				F2873CF41F3C451C00C8DCD7 /* GIFHud */,
 				F2873CF71F3C451C00C8DCD7 /* iOSJieba */,
 				F2873D1B1F3C451C00C8DCD7 /* lottie-ios */,
 				F2873D9A1F3C451C00C8DCD7 /* MBProgressHUD */,
@@ -1484,15 +1480,6 @@
 				F2873CF31F3C451C00C8DCD7 /* Info.plist */,
 			);
 			path = FMDB;
-			sourceTree = "<group>";
-		};
-		F2873CF41F3C451C00C8DCD7 /* GIFHud */ = {
-			isa = PBXGroup;
-			children = (
-				F2873CF51F3C451C00C8DCD7 /* GiFHUD.h */,
-				F2873CF61F3C451C00C8DCD7 /* GiFHUD.m */,
-			);
-			path = GIFHud;
 			sourceTree = "<group>";
 		};
 		F2873CF71F3C451C00C8DCD7 /* iOSJieba */ = {
@@ -2270,7 +2257,6 @@
 				F2873E771F3C451C00C8DCD7 /* MJExtensionConst.m in Sources */,
 				F2873E571F3C451C00C8DCD7 /* NSValue+Compat.m in Sources */,
 				F2873E391F3C451C00C8DCD7 /* FMDatabasePool.m in Sources */,
-				F2873E3D1F3C451C00C8DCD7 /* GiFHUD.m in Sources */,
 				F2873E471F3C451C00C8DCD7 /* LOTMaskLayer.m in Sources */,
 				F2873E7C1F3C451C00C8DCD7 /* NSObject+MJClass.m in Sources */,
 				38DA28FD1F35638D00CD25B6 /* BASentenceRateCell.m in Sources */,
