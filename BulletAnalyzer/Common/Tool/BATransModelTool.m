@@ -94,7 +94,7 @@
             BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
             
             if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
-               
+
                 if (giftModel.nn.length) { //没有用户名的礼物 放弃
                     
                     if (!ignore) { //若不忽略免费礼物

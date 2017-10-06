@@ -12,7 +12,7 @@
 #import "MJExtension.h"
 
 @interface BAGiftModel()
-@property (nonatomic, assign, getter=isStatusReady) BOOL statusReady;
+@property (nonatomic, assign, getter=isstatusReady) BOOL statusReady;
 
 @end
 
@@ -36,33 +36,61 @@ MJCodingImplementation
 - (void)setGs:(NSString *)gs{
     _gs = gs;
     
-    switch (gs.integerValue) {
-        case 1: //鱼丸礼物
-            _giftType = BAGiftTypeFishBall;
-            break;
-            
-        case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
-            self.statusReady = (BOOL)_bl;
-            break;
-            
-        case 3: //弱鸡
-            self.statusReady = (BOOL)_bl;
-            break;
-            
-        case 4: //办卡
-            _giftType = BAGiftTypeCard;
-            break;
-            
-        case 5: //飞机
-            _giftType = BAGiftTypePlane;
-            break;
-            
-        case 6: //火箭
-            _giftType = BAGiftTypeRocket;
-            break;
-            
-        default:
-            break;
+    self.statusReady = self.type.length;
+}
+
+
+- (void)setType:(NSString *)type{
+    [super setType:type];
+    
+    self.statusReady = _gs.length;
+}
+
+
+- (void)setStatusReady:(BOOL)statusReady{
+    _statusReady = statusReady;
+
+    if (statusReady) {
+
+        if ([self.type isEqualToString:BAInfoTypeSuperGift]) {
+
+            switch (_gs.integerValue) {
+                case 5: //火箭
+                    _giftType = BAGiftTypeRocket;
+                    _superRocket = NO;
+                    break;
+
+                case 6: //超级火箭
+                    _giftType = BAGiftTypeRocket;
+                    _superRocket = YES;
+                    break;
+
+                default:
+                    break;
+            }
+        } else if ([self.type isEqualToString:BAInfoTypeSmallGift]) {
+
+            _superRocket = NO;
+            switch (_gs.integerValue) {
+                case 1: //鱼丸礼物
+                    _giftType = BAGiftTypeFishBall;
+                    break;
+
+                case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
+                case 3: //免费礼物(暂时不做筛选)
+                    _giftType = BAGiftTypeCostGift;
+                    break;
+
+                case 4: //办卡及主播特殊礼物
+                    _giftType = BAGiftTypeCard;
+                    break;
+                    
+                case 5: //飞机
+                    _giftType = BAGiftTypePlane;
+                    break;
+
+            }
+        }
     }
 }
 
@@ -72,23 +100,6 @@ MJCodingImplementation
     
     if (sn.length) {
         self.nn = sn;
-    }
-}
-
-
-- (void)setBl:(NSString *)bl{
-    _bl = bl;
-    
-    self.statusReady = _gs.integerValue == 2 || _gs.integerValue == 3;
-}
-
-
-- (void)setStatusReady:(BOOL)statusReady{
-    _statusReady = statusReady;
-    
-    //道具礼物须通过 类型gs 等级bl共同判断
-    if (statusReady) {
-        _giftType = _bl.integerValue ? BAGiftTypeCostGift : BAGiftTypeFreeGift;
     }
 }
 

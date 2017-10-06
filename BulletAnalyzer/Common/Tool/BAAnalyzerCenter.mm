@@ -328,7 +328,6 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 case BAGiftTypeFishBall:
                     
                     [self dealWithFishBall:obj];
-                    
                     break;
                     
                 case BAGiftTypeFreeGift:
@@ -383,6 +382,11 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 {
                     BAGiftValueModel *giftValue = _giftValueArray[7];
                     [self dealWithGift:obj giftValue:giftValue];
+                    if (obj.isSuperRocket) { //如果是超级火箭 计算为4个火箭
+                        for (NSInteger i = 0; i < 3; i++) {
+                            [self dealWithGift:obj giftValue:giftValue];
+                        }
+                    }
                     
                     break;
                 }

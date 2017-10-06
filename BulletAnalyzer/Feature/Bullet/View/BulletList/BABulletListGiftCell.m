@@ -9,6 +9,8 @@
 #import "BABulletListGiftCell.h"
 #import "BAGiftModel.h"
 
+#import "MJExtension.h"
+
 @interface BABulletListGiftCell()
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *giftImageView;
@@ -40,7 +42,12 @@
     NSString *giftImgName = [NSString stringWithFormat:@"giftImg%zd", (NSInteger)giftModel.giftType];
     _giftImageView.image = [UIImage imageNamed:giftImgName];
     
-    NSString *hitStr = _giftModel.hits.length ? [NSString stringWithFormat:@"x %@", _giftModel.hits] : @"x 1";
+    NSString *hitStr;
+    if (giftModel.isSuperRocket) {
+        hitStr = @"超级火箭!";
+    } else {
+        hitStr = _giftModel.hits.length ? [NSString stringWithFormat:@"x %@", _giftModel.hits] : @"x 1";
+    }
     NSMutableAttributedString *hitAttr = [[NSMutableAttributedString alloc] initWithString:hitStr attributes:@{NSForegroundColorAttributeName : BAWhiteColor,
                                                                                                                NSStrokeColorAttributeName : BAColor(255, 241, 127),
                                                                                                                NSFontAttributeName : [UIFont systemFontOfSize:20 weight:UIFontWeightBlack],

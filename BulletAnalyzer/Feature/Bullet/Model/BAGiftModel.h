@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
     BAGiftTypeDeserveLevel3 = 5, //高级酬勤 50鱼翅
     BAGiftTypeCard = 6,    //办卡 6鱼翅鱼翅
     BAGiftTypePlane = 7,    //飞机 100鱼翅
-    BAGiftTypeRocket = 8,    //火箭 500鱼翅
+    BAGiftTypeRocket = 8,    //火箭/超级火箭 500-2000鱼翅
     BAGiftTypeNone = 9999 //无礼物
 };
 
@@ -152,5 +152,10 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
  名字宽度
  */
 @property (nonatomic, assign) CGFloat nameWidth;
+
+/**
+ 是否是超级火箭
+ */
+@property (nonatomic, assign, getter=isSuperRocket) BOOL superRocket;
 
 @end

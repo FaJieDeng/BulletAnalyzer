@@ -10,9 +10,9 @@
 
 static NSString *const BAInfoTypeBullet = @"chatmsg"; //弹幕
 static NSString *const BAInfoTypeLoginReplay = @"loginres"; //登录
-static NSString *const BAInfoTypeSmallGift = @"dgb"; //鱼丸
-static NSString *const BAInfoTypeDeserveGift = @"bc_buy_deserve"; //酬勤
-static NSString *const BAInfoTypeSuperGift = @"spbc"; //火箭/飞机
+static NSString *const BAInfoTypeSmallGift = @"dgb"; //一般礼物
+static NSString *const BAInfoTypeDeserveGift = @"bc_buy_deserve"; //酬勤礼物
+static NSString *const BAInfoTypeSuperGift = @"spbc"; //超级礼物
 
 @interface BABasicInfoModel : NSObject
 
