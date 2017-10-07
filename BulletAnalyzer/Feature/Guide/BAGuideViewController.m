@@ -111,7 +111,7 @@
     _launchAnimation = [LOTAnimationView animationNamed:@"launchAnimation"];
     _launchAnimation.cacheEnable = NO;
     _launchAnimation.frame = self.view.bounds;
-    _launchAnimation.contentMode = UIViewContentModeScaleToFill;
+    _launchAnimation.contentMode = UIViewContentModeScaleAspectFill;
     _launchAnimation.animationSpeed = 1.2;
     
     [_launchMask addSubview:_launchAnimation];

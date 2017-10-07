@@ -158,4 +158,9 @@ typedef NS_ENUM(NSUInteger, BAGiftType) {
  */
 @property (nonatomic, assign, getter=isSuperRocket) BOOL superRocket;
 
+/**
+ 是否是定制礼物
+ */
+@property (nonatomic, assign, getter=isSpecialGift) BOOL specialGift;
+
 @end

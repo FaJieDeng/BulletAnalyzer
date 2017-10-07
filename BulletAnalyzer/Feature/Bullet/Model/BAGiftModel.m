@@ -11,11 +11,6 @@
 #import "BABulletModel.h"
 #import "MJExtension.h"
 
-@interface BAGiftModel()
-@property (nonatomic, assign, getter=isstatusReady) BOOL statusReady;
-
-@end
-
 @implementation BAGiftModel
 
 MJCodingImplementation
@@ -33,65 +28,44 @@ MJCodingImplementation
 }
 
 
-- (void)setGs:(NSString *)gs{
-    _gs = gs;
-    
-    self.statusReady = self.type.length;
-}
+- (BAGiftType)giftType{
 
-
-- (void)setType:(NSString *)type{
-    [super setType:type];
-    
-    self.statusReady = _gs.length;
-}
-
-
-- (void)setStatusReady:(BOOL)statusReady{
-    _statusReady = statusReady;
-
-    if (statusReady) {
-
-        if ([self.type isEqualToString:BAInfoTypeSuperGift]) {
-
-            switch (_gs.integerValue) {
-                case 5: //火箭
-                    _giftType = BAGiftTypeRocket;
-                    _superRocket = NO;
-                    break;
-
-                case 6: //超级火箭
-                    _giftType = BAGiftTypeRocket;
-                    _superRocket = YES;
-                    break;
-
-                default:
-                    break;
-            }
-        } else if ([self.type isEqualToString:BAInfoTypeSmallGift]) {
-
-            _superRocket = NO;
-            switch (_gs.integerValue) {
-                case 1: //鱼丸礼物
-                    _giftType = BAGiftTypeFishBall;
-                    break;
-
-                case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
-                case 3: //免费礼物(暂时不做筛选)
-                    _giftType = BAGiftTypeCostGift;
-                    break;
-
-                case 4: //办卡及主播特殊礼物
-                    _giftType = BAGiftTypeCard;
-                    break;
-                    
-                case 5: //飞机
-                    _giftType = BAGiftTypePlane;
-                    break;
-
-            }
-        }
+    switch (_gs.integerValue) {
+        case 1: //鱼丸礼物
+            _giftType = BAGiftTypeFishBall;
+            break;
+            
+        case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
+        case 3: //免费礼物(暂时不做筛选)
+            _giftType = BAGiftTypeCostGift;
+            break;
+            
+        case 4: //办卡及主播特殊礼物
+            _giftType = BAGiftTypeCard;
+            break;
+            
+        case 5: //飞机/火箭
+            _giftType = [_gn containsString:@"火箭"] ? BAGiftTypeRocket : BAGiftTypePlane;
+            break;
+            
+        case 6: //火箭/超级火箭
+            _giftType = BAGiftTypeRocket;
+            break;
     }
+    
+    return _giftType;
+}
+
+
+- (BOOL)isSpecialGift{
+    //return _giftType == BAGiftTypeCard && _gfid.integerValue != 750;
+    //定制礼物标准未确定
+    return NO;
+}
+
+
+- (BOOL)isSuperRocket{
+    return [_gn isEqualToString:@"超级火箭"];
 }
 
 

@@ -72,7 +72,7 @@ MJCodingImplementation
 
 - (NSInteger)count{
     NSArray *countTotal = [_userModelArray valueForKeyPath:@"@unionOfObjects.giftCount"];
-    NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.integerValue"];
+    NSNumber *sumCount = [countTotal valueForKeyPath:@"@sum.floatValue"];
     
     return sumCount.integerValue;
 }

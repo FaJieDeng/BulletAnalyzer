@@ -49,13 +49,7 @@
 #define BAReportWordsChartHeight (BAReportCountChartHeight - 40)
 #define BAReportFansChartPartWidth (BAReportCountChartWidth - 2 * BAPadding)
 #define BAReportFansChartPartHeight (BAReportWordsChartHeight / 3)
-
-#ifdef Screen58inch
-#define BAReportCellHeight (BAScreenHeight * 2.8 / 5)
-#else
-#define BAReportCellHeight (BAScreenHeight * 3 / 5)
-#endif
-
+#define BAReportCellHeight (Screen58inch ? (BAScreenHeight * 2.8 / 5) : (BAScreenHeight * 3.0 / 5))
 #define BAReportCellWidth (BAScreenWidth - 8 * BAPadding)
 #define BABulletListCellHeight 80
 #define BABulletSettingHeight 90
@@ -124,6 +118,7 @@ static NSString *const BADouyuImgSmallSuffix = @"_small.jpg";
 
 //字符串
 #define BAStringWithInteger(integer) [NSString stringWithFormat:@"%zd", integer]
+#define BAStringWithFloat(float) [NSString stringWithFormat:@"%f", float]
 
 //占位图
 #define BAPlaceHolderImg nil
