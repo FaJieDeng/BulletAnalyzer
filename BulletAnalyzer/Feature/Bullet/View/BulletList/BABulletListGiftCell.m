@@ -44,7 +44,9 @@
     
     NSString *hitStr;
     if (giftModel.isSuperRocket) {
-        hitStr = @"超级火箭!";
+        hitStr = @"Super!";
+    } else if (giftModel.isSpecialGift) {
+        hitStr = @"Special!";
     } else {
         hitStr = _giftModel.hits.length ? [NSString stringWithFormat:@"x %@", _giftModel.hits] : @"x 1";
     }

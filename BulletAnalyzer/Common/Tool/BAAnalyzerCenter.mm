@@ -403,21 +403,24 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  处理鱼丸礼物
  */
 - (void)dealWithFishBall:(BAGiftModel *)fishBall{
-    
-    //送鱼丸次数
-    BOOL contained = NO;
-    for (BAUserModel *userModel in _userFishBallCountArray) {
-       
-        contained = [fishBall.nn isEqual:userModel.nn];
-        if (contained) {
-            userModel.fishBallCount = BAStringWithInteger(userModel.fishBallCount.integerValue + 1);
-            break;
+   
+    @autoreleasepool {
+        
+        //送鱼丸次数
+        BOOL contained = NO;
+        for (BAUserModel *userModel in _userFishBallCountArray) {
+            
+            contained = [fishBall.nn isEqual:userModel.nn];
+            if (contained) {
+                userModel.fishBallCount = BAStringWithInteger(userModel.fishBallCount.integerValue + 1);
+                break;
+            }
         }
-    }
-    
-    if (!contained) {
-        BAUserModel *newUserModel = [BAUserModel userModelWithGift:fishBall];
-        [_userFishBallCountArray addObject:newUserModel];
+        
+        if (!contained) {
+            BAUserModel *newUserModel = [BAUserModel userModelWithGift:fishBall];
+            [_userFishBallCountArray addObject:newUserModel];
+        }
     }
 }
 
@@ -427,18 +430,25 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
     
-    BOOL contained = NO;
-    for (BAUserModel *userModel in giftValue.userModelArray) {
-        contained = [giftModel.nn isEqual:userModel.nn];
-        if (contained) {
-            userModel.giftCount = BAStringWithInteger(userModel.giftCount.integerValue + 1); //用户礼物计数器+1
-            break;
+    @autoreleasepool {
+        
+        BOOL contained = NO;
+        for (BAUserModel *userModel in giftValue.userModelArray) {
+            contained = [giftModel.nn isEqual:userModel.nn];
+            if (contained) {
+                CGFloat addVal = 1.0;
+                if (giftValue.giftType == BAGiftTypeCard) {
+                    addVal = giftModel.isSpecialGift ? 1.5 : 1.0;
+                }
+                userModel.giftCount = BAStringWithFloat(userModel.giftCount.floatValue + addVal); //用户礼物计数器+1
+                break;
+            }
         }
-    }
-    
-    if (!contained) {
-        BAUserModel *newUserModel = [BAUserModel userModelWithGift:giftModel];
-        [giftValue.userModelArray addObject:newUserModel];
+        
+        if (!contained) {
+            BAUserModel *newUserModel = [BAUserModel userModelWithGift:giftModel];
+            [giftValue.userModelArray addObject:newUserModel];
+        }
     }
 }
 
@@ -496,101 +506,104 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)analyzingWords:(BABulletModel *)bulletModel{
     
-    //结巴分词
-    NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
-    
-    //词频分析
-    for (NSString *words in wordsArray) {
+    @autoreleasepool {
         
-        if (![self isIgnoreSpcificWords:words] && ![self isIgnorePureNumber:words]) { //筛选
-
-            //记录词的出现频率
-            BOOL contained = NO;
-            for (BAWordsModel *wordsModel in _wordsArray) {
-                contained = [wordsModel isEqual:words];
-                if (contained) {
-                    wordsModel.count = BAStringWithInteger(wordsModel.count.integerValue + 1);
-                    break;
-                }
-            }
+        //结巴分词
+        NSArray *wordsArray = [self stringCutByJieba:bulletModel.txt];
+        
+        //词频分析
+        for (NSString *words in wordsArray) {
             
-            if (!contained) {
-                BAWordsModel *newWordsModel = [BAWordsModel new];
-                newWordsModel.words = words;
-                newWordsModel.count = BAStringWithInteger(1);
+            if (![self isIgnoreSpcificWords:words] && ![self isIgnorePureNumber:words]) { //筛选
                 
-                [_wordsArray addObject:newWordsModel];
+                //记录词的出现频率
+                BOOL contained = NO;
+                for (BAWordsModel *wordsModel in _wordsArray) {
+                    contained = [wordsModel isEqual:words];
+                    if (contained) {
+                        wordsModel.count = BAStringWithInteger(wordsModel.count.integerValue + 1);
+                        break;
+                    }
+                }
+                
+                if (!contained) {
+                    BAWordsModel *newWordsModel = [BAWordsModel new];
+                    newWordsModel.words = words;
+                    newWordsModel.count = BAStringWithInteger(1);
+                    
+                    [_wordsArray addObject:newWordsModel];
+                }
             }
         }
-    }
-    
-    //语义分析
-    BASentenceModel *newSentence = [BASentenceModel new];
-    newSentence.text = bulletModel.txt;
-    newSentence.wordsArray = wordsArray;
-    newSentence.count = 1;
-    newSentence.realCount = 1;
-    
-    __block NSMutableDictionary *wordsDic = [NSMutableDictionary dictionary];
-    [wordsArray enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL * _Nonnull stop1) {
         
-        //若字典中已有这个词的词频 则停止计算
-        if ([[wordsDic objectForKey:obj1] integerValue]) {
-            *stop1 = YES;
-        } else {
-            __block NSInteger count = 1;
-            [wordsArray enumerateObjectsUsingBlock:^(NSString *obj2, NSUInteger idx2, BOOL * _Nonnull stop2) {
-                if ([obj1 isEqualToString:obj2] && idx1 != idx2) {
-                    count += 1;
+        //语义分析
+        BASentenceModel *newSentence = [BASentenceModel new];
+        newSentence.text = bulletModel.txt;
+        newSentence.wordsArray = wordsArray;
+        newSentence.count = 1;
+        newSentence.realCount = 1;
+        
+        __block NSMutableDictionary *wordsDic = [NSMutableDictionary dictionary];
+        [wordsArray enumerateObjectsUsingBlock:^(NSString *obj1, NSUInteger idx1, BOOL * _Nonnull stop1) {
+            
+            //若字典中已有这个词的词频 则停止计算
+            if ([[wordsDic objectForKey:obj1] integerValue]) {
+                *stop1 = YES;
+            } else {
+                __block NSInteger count = 1;
+                [wordsArray enumerateObjectsUsingBlock:^(NSString *obj2, NSUInteger idx2, BOOL * _Nonnull stop2) {
+                    if ([obj1 isEqualToString:obj2] && idx1 != idx2) {
+                        count += 1;
+                    }
+                }];
+                
+                [wordsDic setObject:@(count) forKey:obj1];
+            }
+        }];
+        
+        newSentence.wordsDic = wordsDic;
+        
+        __block BOOL similar = NO;
+        [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            //计算余弦角度
+            //两个向量内积
+            //两个向量模长乘积
+            __block NSInteger A = 0; //两个向量内积
+            __block NSInteger B = 0; //第一个句子的模长乘积的平方
+            __block NSInteger C = 0; //第二个句子的模长乘积的平方
+            [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+                
+                NSNumber *value2 = [wordsDic objectForKey:key1];
+                if (value2.integerValue) {
+                    A += (value1.integerValue * value2.integerValue);
+                } else {
+                    A += 0;
                 }
+                
+                B += value1.integerValue * value1.integerValue;
             }];
             
-            [wordsDic setObject:@(count) forKey:obj1];
-        }
-    }];
-    
-    newSentence.wordsDic = wordsDic;
-    
-    __block BOOL similar = NO;
-    [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        //计算余弦角度
-        //两个向量内积
-        //两个向量模长乘积
-        __block NSInteger A = 0; //两个向量内积
-        __block NSInteger B = 0; //第一个句子的模长乘积的平方
-        __block NSInteger C = 0; //第二个句子的模长乘积的平方
-        [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+            [wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
+                
+                C += value2.integerValue * value2.integerValue;
+            }];
             
-            NSNumber *value2 = [wordsDic objectForKey:key1];
-            if (value2.integerValue) {
-                A += (value1.integerValue * value2.integerValue);
-            } else {
-                A += 0;
+            CGFloat percent = 1 - acos(A / (sqrt(B) * sqrt(C))) / M_PI;;
+            
+            if (percent > self.similarity) { //7成相似 则合并
+                *stop = YES;
+                similar = YES;
+                sentence.count += 1;
+                sentence.realCount += 1;
             }
-            
-            B += value1.integerValue * value1.integerValue;
         }];
         
-        [wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
-            
-            C += value2.integerValue * value2.integerValue;
-        }];
-        
-        CGFloat percent = 1 - acos(A / (sqrt(B) * sqrt(C))) / M_PI;;
-        
-        if (percent > self.similarity) { //7成相似 则合并
-            *stop = YES;
-            similar = YES;
-            sentence.count += 1;
-            sentence.realCount += 1;
+        if (!similar) {
+            newSentence.container = _sentenceArray;
+            [_sentenceArray addObject:newSentence];
+            [_popSentenceArray addObject:newSentence];
         }
-    }];
-    
-    if (!similar) {
-        newSentence.container = _sentenceArray;
-        [_sentenceArray addObject:newSentence];
-        [_popSentenceArray addObject:newSentence];
     }
 }
 
@@ -818,7 +831,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
                 BOOL isSuperGift = giftValueModel.giftType == BAGiftTypePlane || giftValueModel.giftType == BAGiftTypeRocket;
                 
                 [giftValueModel.userModelArray sortUsingComparator:^NSComparisonResult(BAUserModel *userModel1, BAUserModel *userModel2) {
-                    return userModel1.giftCount.integerValue > userModel2.giftCount.integerValue ? NSOrderedAscending : NSOrderedDescending;
+                    return userModel1.giftCount.floatValue > userModel2.giftCount.floatValue ? NSOrderedAscending : NSOrderedDescending;
                 }];
                 
                 if (giftValueModel.userModelArray.count > 30 && !isSuperGift) {

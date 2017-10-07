@@ -46,10 +46,10 @@
     } else {
         if (userModel.count) {
             
-            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物, %@次发言", userModel.giftCount, userModel.count];
+            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物, %@次发言", userModel.giftCount.integerValue, userModel.count];
         } else {
         
-            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", userModel.giftCount];
+            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物", userModel.giftCount.integerValue];
         }
     }
 }
