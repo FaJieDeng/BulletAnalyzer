@@ -45,13 +45,13 @@
         _infoLabel.text = [NSString stringWithFormat:@"%@次发言", userModel.count];
     } else {
         
-        NSString *giftCount = userModel.giftCount ? : userModel.fishBallCount;
+        NSInteger giftCount = userModel.giftCount ? userModel.giftCount.integerValue : userModel.fishBallCount.integerValue;
         if (userModel.count) {
             
-            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物, %@次发言", giftCount, userModel.count];
+            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物, %@次发言", giftCount, userModel.count];
         } else {
         
-            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", giftCount];
+            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物", giftCount];
         }
     }
 }
