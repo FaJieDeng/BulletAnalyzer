@@ -322,7 +322,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 - (void)giftClassify:(NSArray *)giftModelArray{
     
     dispatch_async(_serialQueue, ^{
-        
+            
         for (BAGiftModel *obj in giftModelArray) {
             switch (obj.giftType) {
                 case BAGiftTypeFishBall:
@@ -410,7 +410,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         BOOL contained = NO;
         for (BAUserModel *userModel in _userFishBallCountArray) {
             
-            contained = [fishBall.nn isEqual:userModel.nn];
+            contained = [fishBall.nn isEqualToString:userModel.nn];
             if (contained) {
                 userModel.fishBallCount = BAStringWithInteger(userModel.fishBallCount.integerValue + 1);
                 break;

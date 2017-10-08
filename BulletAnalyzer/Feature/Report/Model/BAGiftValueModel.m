@@ -28,7 +28,7 @@ MJCodingImplementation
             break;
             
         case BAGiftTypeCostGift:
-            _giftValue = 0.15;
+            _giftValue = 0.1; //小礼物按0.1个鱼翅计算, 因为非常多的免费礼物
             _alpha = 0.45;
             break;
             

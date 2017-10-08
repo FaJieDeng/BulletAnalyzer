@@ -38,7 +38,11 @@ MJExtensionCodingImplementation
     userModel.level = giftModel.level;
     userModel.ic = giftModel.ic;
     userModel.ct = giftModel.ct;
-    userModel.giftCount = @"1";
+    if (giftModel.giftType == BAGiftTypeFishBall) {
+        userModel.fishBallCount = @"1";
+    } else {
+        userModel.giftCount = @"1";
+    }
     userModel.bulletArray = [NSMutableArray array];
     
     return userModel;

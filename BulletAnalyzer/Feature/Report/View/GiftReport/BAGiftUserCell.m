@@ -44,12 +44,14 @@
     if (self.isActiveCell) {
         _infoLabel.text = [NSString stringWithFormat:@"%@次发言", userModel.count];
     } else {
+        
+        NSString *giftCount = userModel.giftCount ? : userModel.fishBallCount;
         if (userModel.count) {
             
-            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物, %@次发言", userModel.giftCount.integerValue, userModel.count];
+            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物, %@次发言", giftCount, userModel.count];
         } else {
         
-            _infoLabel.text = [NSString stringWithFormat:@"%zd个礼物", userModel.giftCount.integerValue];
+            _infoLabel.text = [NSString stringWithFormat:@"%@个礼物", giftCount];
         }
     }
 }
