@@ -101,7 +101,7 @@
     CGFloat margin = _chart.width / 9;
     NSInteger maxCount = wordsModel.count.integerValue;
 
-    NSArray *wordsArray = [_reportModel.wordsArray subarrayWithRange:NSMakeRange(0, 10)]; //取前十 乱序
+    NSArray *wordsArray = [_reportModel.wordsArray subarrayWithRange:NSMakeRange(0, _reportModel.wordsArray.count < 10 ? _reportModel.wordsArray.count : 10)]; //取前十 乱序
     NSArray *wordsArrayRandom = [wordsArray sortedArrayUsingComparator:^NSComparisonResult(BAWordsModel *obj1, BAWordsModel *obj2) {
         int seed = arc4random_uniform(2);
         if (seed) {
