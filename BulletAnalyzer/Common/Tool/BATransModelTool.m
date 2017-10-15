@@ -34,36 +34,38 @@
 #pragma mark - socket数据解析
 + (void)transModelWithData:(NSData *)data ignoreFreeGift:(BOOL)ignore complete:(transCompleteBlock)complete{
    
-    NSMutableArray *contents = [NSMutableArray array];
-    NSData *subData = data.copy;
-    NSInteger _loction = 0;
-    NSInteger _length = 0;
-    do {
-        //前12字节: 4长度+4长度+2类型+2保留
-        _loction += 12;
-        //获取数据长度
-        [subData getBytes:&_length range:NSMakeRange(0, 4)];
-        _length -= 8;
-        //截取相对应的数据
-        if (_length <= subData.length - 12) {
-           
-            NSData *contentData = [subData subdataWithRange:NSMakeRange(12, _length)];
-            NSString *content = [[NSString alloc] initWithData:contentData encoding:NSUTF8StringEncoding];
-            //截取余下的数据
-            subData = [data subdataWithRange:NSMakeRange(_length + _loction, data.length - _length - _loction)];
-            
-            if (content.length) {
-                [contents addObject:content];
+    @autoreleasepool {
+        NSMutableArray *contents = [NSMutableArray array];
+        NSData *subData = data.copy;
+        NSInteger _loction = 0;
+        NSInteger _length = 0;
+        do {
+            //前12字节: 4长度+4长度+2类型+2保留
+            _loction += 12;
+            //获取数据长度
+            [subData getBytes:&_length range:NSMakeRange(0, 4)];
+            _length -= 8;
+            //截取相对应的数据
+            if (_length <= subData.length - 12) {
+                
+                NSData *contentData = [subData subdataWithRange:NSMakeRange(12, _length)];
+                NSString *content = [[NSString alloc] initWithData:contentData encoding:NSUTF8StringEncoding];
+                //截取余下的数据
+                subData = [data subdataWithRange:NSMakeRange(_length + _loction, data.length - _length - _loction)];
+                
+                if (content.length) {
+                    [contents addObject:content];
+                }
+                
+                _loction += _length;
             }
             
-            _loction += _length;
-        }
+        } while (_loction < data.length && subData.length > 12);
         
-    } while (_loction < data.length && subData.length > 12);
-
-    [self transModelWithContents:contents ignoreFreeGift:ignore complete:^(NSMutableArray *array, BAModelType modelType) {
-        complete(array, modelType);
-    }];
+        [self transModelWithContents:contents ignoreFreeGift:ignore complete:^(NSMutableArray *array, BAModelType modelType) {
+            complete(array, modelType);
+        }];
+    }
 }
 
 
@@ -75,43 +77,45 @@
     
     [contents enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
        
-        NSMutableDictionary *dic = [self transStingToKeyValues:obj];
-        if ([dic[@"type"] isEqualToString:BAInfoTypeBullet]) {
-            
-            BABulletModel *bulletModel = [BABulletModel mj_objectWithKeyValues:dic];
-            
-            [[BAAnalyzerCenter defaultCenter].noticeArray.copy enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if ([bulletModel.nn isEqualToString:obj]) {
-                    bulletModel.notice = YES;
-                    *stop = YES;
-                }
-            }];
-            
-            [bulletArray addObject:bulletModel];
-            
-        } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
-            
-            BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
-            
-            if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
-
-                if (giftModel.nn.length) { //没有用户名的礼物 放弃
+        @autoreleasepool {
+            NSMutableDictionary *dic = [self transStingToKeyValues:obj];
+            if ([dic[@"type"] isEqualToString:BAInfoTypeBullet]) {
+                
+                BABulletModel *bulletModel = [BABulletModel mj_objectWithKeyValues:dic];
+                
+                [[BAAnalyzerCenter defaultCenter].noticeArray.copy enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([bulletModel.nn isEqualToString:obj]) {
+                        bulletModel.notice = YES;
+                        *stop = YES;
+                    }
+                }];
+                
+                [bulletArray addObject:bulletModel];
+                
+            } else if ([dic[@"type"] isEqualToString:BAInfoTypeSmallGift] || [dic[@"type"] isEqualToString:BAInfoTypeDeserveGift] || [dic[@"type"] isEqualToString:BAInfoTypeSuperGift]) {
+                
+                BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
+                
+                if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
                     
-                    if (!ignore) { //若不忽略免费礼物
+                    if (giftModel.nn.length) { //没有用户名的礼物 放弃
                         
-                        [giftArray addObject:giftModel];
-                        
-                    } else if (giftModel.giftType != BAGiftTypeFreeGift) { //忽略免费礼物
-                        
-                        [giftArray addObject:giftModel];
+                        if (!ignore) { //若不忽略免费礼物
+                            
+                            [giftArray addObject:giftModel];
+                            
+                        } else if (giftModel.giftType != BAGiftTypeFreeGift) { //忽略免费礼物
+                            
+                            [giftArray addObject:giftModel];
+                        }
                     }
                 }
+                
+            } else if ([dic[@"type"] isEqualToString:BAInfoTypeLoginReplay]) { //登录返回数据
+                
+                BAReplyModel *replayModel = [BAReplyModel mj_objectWithKeyValues:dic];
+                [replayArray addObject:replayModel];
             }
-        
-        } else if ([dic[@"type"] isEqualToString:BAInfoTypeLoginReplay]) { //登录返回数据
-           
-            BAReplyModel *replayModel = [BAReplyModel mj_objectWithKeyValues:dic];
-            [replayArray addObject:replayModel];
         }
     }];
     
@@ -129,11 +133,13 @@
     __block NSMutableDictionary *keyValues = [NSMutableDictionary dictionary];
     [strArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
-        NSArray *tempArray = [obj componentsSeparatedByString:@"@="];
-        NSString *value = [tempArray lastObject];
-        if (value.length) {
-            NSString *key = [tempArray firstObject];
-            [keyValues setValue:value forKey:key];
+        @autoreleasepool {
+            NSArray *tempArray = [obj componentsSeparatedByString:@"@="];
+            NSString *value = [tempArray lastObject];
+            if (value.length) {
+                NSString *key = [tempArray firstObject];
+                [keyValues setValue:value forKey:key];
+            }
         }
     }];
     
