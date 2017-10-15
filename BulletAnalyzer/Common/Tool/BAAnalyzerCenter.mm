@@ -403,24 +403,21 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  处理鱼丸礼物
  */
 - (void)dealWithFishBall:(BAGiftModel *)fishBall{
-   
-    @autoreleasepool {
+
+    //送鱼丸次数
+    BOOL contained = NO;
+    for (BAUserModel *userModel in _userFishBallCountArray) {
         
-        //送鱼丸次数
-        BOOL contained = NO;
-        for (BAUserModel *userModel in _userFishBallCountArray) {
-            
-            contained = [fishBall.nn isEqualToString:userModel.nn];
-            if (contained) {
-                userModel.fishBallCount = BAStringWithInteger(userModel.fishBallCount.integerValue + 1);
-                break;
-            }
+        contained = [fishBall.nn isEqualToString:userModel.nn];
+        if (contained) {
+            userModel.fishBallCount = BAStringWithInteger(userModel.fishBallCount.integerValue + 1);
+            break;
         }
-        
-        if (!contained) {
-            BAUserModel *newUserModel = [BAUserModel userModelWithGift:fishBall];
-            [_userFishBallCountArray addObject:newUserModel];
-        }
+    }
+    
+    if (!contained) {
+        BAUserModel *newUserModel = [BAUserModel userModelWithGift:fishBall];
+        [_userFishBallCountArray addObject:newUserModel];
     }
 }
 
@@ -430,25 +427,22 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  */
 - (void)dealWithGift:(BAGiftModel *)giftModel giftValue:(BAGiftValueModel *)giftValue{
     
-    @autoreleasepool {
-        
-        BOOL contained = NO;
-        for (BAUserModel *userModel in giftValue.userModelArray) {
-            contained = [giftModel.nn isEqual:userModel.nn];
-            if (contained) {
-                CGFloat addVal = 1.0;
-                if (giftValue.giftType == BAGiftTypeCard) {
-                    addVal = giftModel.isSpecialGift ? 1.5 : 1.0;
-                }
-                userModel.giftCount = BAStringWithFloat(userModel.giftCount.floatValue + addVal); //用户礼物计数器+1
-                break;
+    BOOL contained = NO;
+    for (BAUserModel *userModel in giftValue.userModelArray) {
+        contained = [giftModel.nn isEqual:userModel.nn];
+        if (contained) {
+            CGFloat addVal = 1.0;
+            if (giftValue.giftType == BAGiftTypeCard) {
+                addVal = giftModel.isSpecialGift ? 1.5 : 1.0;
             }
+            userModel.giftCount = BAStringWithFloat(userModel.giftCount.floatValue + addVal); //用户礼物计数器+1
+            break;
         }
-        
-        if (!contained) {
-            BAUserModel *newUserModel = [BAUserModel userModelWithGift:giftModel];
-            [giftValue.userModelArray addObject:newUserModel];
-        }
+    }
+    
+    if (!contained) {
+        BAUserModel *newUserModel = [BAUserModel userModelWithGift:giftModel];
+        [giftValue.userModelArray addObject:newUserModel];
     }
 }
 
@@ -566,36 +560,38 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         __block BOOL similar = NO;
         [_sentenceArray enumerateObjectsUsingBlock:^(BASentenceModel *sentence, NSUInteger idx, BOOL * _Nonnull stop) {
             
-            //计算余弦角度
-            //两个向量内积
-            //两个向量模长乘积
-            __block NSInteger A = 0; //两个向量内积
-            __block NSInteger B = 0; //第一个句子的模长乘积的平方
-            __block NSInteger C = 0; //第二个句子的模长乘积的平方
-            [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+            @autoreleasepool {
+                //计算余弦角度
+                //两个向量内积
+                //两个向量模长乘积
+                __block NSInteger A = 0; //两个向量内积
+                __block NSInteger B = 0; //第一个句子的模长乘积的平方
+                __block NSInteger C = 0; //第二个句子的模长乘积的平方
+                [sentence.wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key1, NSNumber *value1, BOOL * _Nonnull stop) {
+                    
+                    NSNumber *value2 = [wordsDic objectForKey:key1];
+                    if (value2.integerValue) {
+                        A += (value1.integerValue * value2.integerValue);
+                    } else {
+                        A += 0;
+                    }
+                    
+                    B += value1.integerValue * value1.integerValue;
+                }];
                 
-                NSNumber *value2 = [wordsDic objectForKey:key1];
-                if (value2.integerValue) {
-                    A += (value1.integerValue * value2.integerValue);
-                } else {
-                    A += 0;
+                [wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
+                    
+                    C += value2.integerValue * value2.integerValue;
+                }];
+                
+                CGFloat percent = 1 - acos(A / (sqrt(B) * sqrt(C))) / M_PI;;
+                
+                if (percent > self.similarity) { //7成相似 则合并
+                    *stop = YES;
+                    similar = YES;
+                    sentence.count += 1;
+                    sentence.realCount += 1;
                 }
-                
-                B += value1.integerValue * value1.integerValue;
-            }];
-            
-            [wordsDic enumerateKeysAndObjectsUsingBlock:^(NSString *key2, NSNumber *value2, BOOL * _Nonnull stop) {
-                
-                C += value2.integerValue * value2.integerValue;
-            }];
-            
-            CGFloat percent = 1 - acos(A / (sqrt(B) * sqrt(C))) / M_PI;;
-            
-            if (percent > self.similarity) { //7成相似 则合并
-                *stop = YES;
-                similar = YES;
-                sentence.count += 1;
-                sentence.realCount += 1;
             }
         }];
         
@@ -636,31 +632,35 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     
     if (!string) return nil;
     
-    if ([self isIgnorePureNumber:string]) {
+    @autoreleasepool {
         
-        NSMutableArray *tempArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < string.length; i++) {
-            [tempArray addObject:[string substringWithRange:NSMakeRange(i, 1)]];
+        if ([self isIgnorePureNumber:string]) {
+            
+            NSMutableArray *tempArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < string.length; i++) {
+                [tempArray addObject:[string substringWithRange:NSMakeRange(i, 1)]];
+            }
+            return tempArray.copy;
+            
+        } else {
+            
+            //结巴分词, 转为词数组
+            const char* sentence = [string UTF8String];
+            std::vector<std::string> words;
+            JiebaCut(sentence, words);
+            std::string result;
+            result << words;
+            
+            NSString *relustString = [NSString stringWithUTF8String:result.c_str()].copy;
+            
+            relustString = [relustString stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            relustString = [relustString stringByReplacingOccurrencesOfString:@"]" withString:@""];
+            relustString = [relustString stringByReplacingOccurrencesOfString:@" " withString:@""];
+            relustString = [relustString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            NSArray *wordsArray = [relustString componentsSeparatedByString:@","];
+            
+            return wordsArray;
         }
-        return tempArray.copy;
-        
-    } else {
-        //结巴分词, 转为词数组
-        const char* sentence = [string UTF8String];
-        std::vector<std::string> words;
-        JiebaCut(sentence, words);
-        std::string result;
-        result << words;
-        
-        NSString *relustString = [NSString stringWithUTF8String:result.c_str()].copy;
-        
-        relustString = [relustString stringByReplacingOccurrencesOfString:@"[" withString:@""];
-        relustString = [relustString stringByReplacingOccurrencesOfString:@"]" withString:@""];
-        relustString = [relustString stringByReplacingOccurrencesOfString:@" " withString:@""];
-        relustString = [relustString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-        NSArray *wordsArray = [relustString componentsSeparatedByString:@","];
-        
-        return wordsArray;
     }
 }
 
@@ -782,19 +782,22 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
  计算等级分布曲线
  */
 - (void)caculateLevelPoint{
-    //计算等级分布图的坐标
-    NSMutableArray *tempCountPointArray = [NSMutableArray array];
-    NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
-    [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        CGPoint point = CGPointMake(BAReportFansChartPartWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAReportFansChartPartHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
-        [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
-    }];
     
-    if (_levelCountArray.count) {
-        [_levelCountPointArray removeAllObjects];
+    @autoreleasepool {
+        //计算等级分布图的坐标
+        NSMutableArray *tempCountPointArray = [NSMutableArray array];
+        NSInteger maxLevelCount = [[_levelCountArray valueForKeyPath:@"@max.integerValue"] integerValue];
+        [_levelCountArray enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            CGPoint point = CGPointMake(BAReportFansChartPartWidth * (CGFloat)idx / (_levelCountArray.count - 1), BAReportFansChartPartHeight * (1 - ((CGFloat)obj.integerValue / maxLevelCount)));
+            [tempCountPointArray addObject:[NSValue valueWithCGPoint:point]];
+        }];
+        
+        if (_levelCountArray.count) {
+            [_levelCountPointArray removeAllObjects];
+        }
+        [_levelCountPointArray addObjectsFromArray:tempCountPointArray];
     }
-    [_levelCountPointArray addObjectsFromArray:tempCountPointArray];
 }
 
 
