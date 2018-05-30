@@ -41,7 +41,7 @@
     
     [_screenShotImgView sd_setImageWithURL:[NSURL URLWithString:roomModel.room_src] placeholderImage:BAPlaceHolderImg];
     _anchorNameLabel.text = [NSString stringWithFormat:@"%@ | %@", roomModel.online, roomModel.nickname];
-    _roomTypeLabel.text = roomModel.game_name;
+    _roomTypeLabel.text = roomModel.online;
     
     _roomNameLabel.text = roomModel.room_name;
     _roomNameLabel.center = _screenShotImgView.center;
