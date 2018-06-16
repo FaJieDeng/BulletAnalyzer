@@ -46,6 +46,7 @@
 		387020471F2242490047B94B /* BACountInfoBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020431F2242490047B94B /* BACountInfoBlock.m */; };
 		387020481F2242490047B94B /* BACountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 387020451F2242490047B94B /* BACountInfoView.m */; };
 		3873CCAC1F384BEF0007BA79 /* BAShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3873CCAB1F384BEF0007BA79 /* BAShareView.m */; };
+		38752A5720D4DF8A005DBA03 /* BARoomGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 38752A5620D4DF8A005DBA03 /* BARoomGiftModel.m */; };
 		388A00011EE04A030031DE53 /* BASocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A00001EE04A030031DE53 /* BASocketTool.m */; };
 		388A85D01EE40D0B00A0BC5B /* ZJAFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85CF1EE40D0B00A0BC5B /* ZJAFNetworking.m */; };
 		388A85D31EE40D5700A0BC5B /* BAHttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 388A85D21EE40D5700A0BC5B /* BAHttpTool.m */; };
@@ -325,6 +326,8 @@
 		387020451F2242490047B94B /* BACountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACountInfoView.m; sourceTree = "<group>"; };
 		3873CCAA1F384BEF0007BA79 /* BAShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAShareView.h; sourceTree = "<group>"; };
 		3873CCAB1F384BEF0007BA79 /* BAShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAShareView.m; sourceTree = "<group>"; };
+		38752A5520D4DF8A005DBA03 /* BARoomGiftModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BARoomGiftModel.h; sourceTree = "<group>"; };
+		38752A5620D4DF8A005DBA03 /* BARoomGiftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BARoomGiftModel.m; sourceTree = "<group>"; };
 		388A00001EE04A030031DE53 /* BASocketTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASocketTool.m; sourceTree = "<group>"; };
 		388A85CE1EE40D0B00A0BC5B /* ZJAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJAFNetworking.h; sourceTree = "<group>"; };
 		388A85CF1EE40D0B00A0BC5B /* ZJAFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJAFNetworking.m; sourceTree = "<group>"; };
@@ -1085,6 +1088,8 @@
 			children = (
 				388A860B1EE4218B00A0BC5B /* BARoomModel.h */,
 				388A860C1EE4218B00A0BC5B /* BARoomModel.m */,
+				38752A5520D4DF8A005DBA03 /* BARoomGiftModel.h */,
+				38752A5620D4DF8A005DBA03 /* BARoomGiftModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2338,6 +2343,7 @@
 				380ECF0E1F22ED6A00D26CF6 /* BAFansInfoView.m in Sources */,
 				388A85E81EE4108C00A0BC5B /* BABulletListView.m in Sources */,
 				388AFFFD1EE049EA0031DE53 /* AppDelegate.m in Sources */,
+				38752A5720D4DF8A005DBA03 /* BARoomGiftModel.m in Sources */,
 				388A85D01EE40D0B00A0BC5B /* ZJAFNetworking.m in Sources */,
 				F2873EE91F3C69F900C8DCD7 /* MJRefreshBackGifFooter.m in Sources */,
 				F2873EA81F3C451C00C8DCD7 /* UIView+WebCacheOperation.m in Sources */,

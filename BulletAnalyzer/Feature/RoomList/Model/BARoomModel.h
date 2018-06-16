@@ -120,5 +120,10 @@
  */
 @property (nonatomic, copy) NSString *room_status;
 
+/**
+ 礼物数组
+ */
+@property (nonatomic, strong) NSArray *gift;
+
 @end
 

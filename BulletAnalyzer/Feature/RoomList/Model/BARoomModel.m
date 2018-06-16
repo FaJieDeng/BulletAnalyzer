@@ -8,6 +8,7 @@
 
 #import "BARoomModel.h"
 #import "MJExtension.h"
+#import "BARoomGiftModel.h"
 
 @implementation BARoomModel
 
@@ -26,6 +27,12 @@ MJExtensionCodingImplementation
     _avatar = owner_avatar;
 }
 
+
++ (NSDictionary *)mj_objectClassInArray {
+    return @{
+             @"gift" : [BARoomGiftModel class]
+             };
+}
 
 - (void)setCate_name:(NSString *)cate_name{
     _cate_name = cate_name;

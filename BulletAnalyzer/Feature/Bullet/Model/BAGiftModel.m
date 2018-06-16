@@ -28,33 +28,33 @@ MJCodingImplementation
 }
 
 
-- (BAGiftType)giftType{
-
-    switch (_gs.integerValue) {
-        case 1: //鱼丸礼物
-            _giftType = BAGiftTypeFishBall;
-            break;
-            
-        case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
-        case 3: //免费礼物(暂时不做筛选)
-            _giftType = BAGiftTypeCostGift;
-            break;
-            
-        case 4: //办卡及主播特殊礼物
-            _giftType = BAGiftTypeCard;
-            break;
-            
-        case 5: //飞机/火箭
-            _giftType = [_gn containsString:@"火箭"] ? BAGiftTypeRocket : BAGiftTypePlane;
-            break;
-            
-        case 6: //火箭/超级火箭
-            _giftType = BAGiftTypeRocket;
-            break;
-    }
-    
-    return _giftType;
-}
+//- (BAGiftType)giftType{
+//
+//    switch (_gs.integerValue) {
+//        case 1: //鱼丸礼物
+//            _giftType = BAGiftTypeFishBall;
+//            break;
+//
+//        case 2: //怂 稳 呵呵 点赞 粉丝荧光棒 辣眼睛
+//        case 3: //免费礼物(暂时不做筛选)
+//            _giftType = BAGiftTypeCostGift;
+//            break;
+//
+//        case 4: //办卡及主播特殊礼物
+//            _giftType = BAGiftTypeCard;
+//            break;
+//
+//        case 5: //飞机/火箭
+//            _giftType = [_gn containsString:@"火箭"] ? BAGiftTypeRocket : BAGiftTypePlane;
+//            break;
+//
+//        case 6: //火箭/超级火箭
+//            _giftType = BAGiftTypeRocket;
+//            break;
+//    }
+//
+//    return _giftType;
+//}
 
 
 - (BOOL)isSpecialGift{
@@ -64,9 +64,9 @@ MJCodingImplementation
 }
 
 
-- (BOOL)isSuperRocket{
-    return [_gn isEqualToString:@"超级火箭"];
-}
+//- (BOOL)isSuperRocket{
+//    return [_gn containsString:@"超级火箭"];
+//}
 
 
 - (void)setSn:(NSString *)sn{

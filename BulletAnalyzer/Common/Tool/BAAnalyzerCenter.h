@@ -38,6 +38,11 @@
 @property (nonatomic, assign, getter=isAnalyzing) BOOL analyzing;
 
 /**
+ 需要继续分析的
+ */
+@property (nonatomic, strong) BAReportModel *analyzingReportModel;
+
+/**
  需要继续分析的模型
  */
 @property (nonatomic, strong) BAReportModel *proceedReportModel;
@@ -46,6 +51,11 @@
  关注对象数组
  */
 @property (nonatomic, strong) NSMutableArray *noticeArray;
+
+/**
+ 礼物价值数组
+ */
+@property (nonatomic, strong, readonly) NSMutableDictionary *giftModelDic;
 
 /**
  清理内存计时器

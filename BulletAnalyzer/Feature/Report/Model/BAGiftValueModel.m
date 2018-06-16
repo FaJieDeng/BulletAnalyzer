@@ -58,8 +58,6 @@ MJCodingImplementation
             break;
             
         case BAGiftTypeRocket:
-            
-            
             _giftValue = 500;
             _alpha = 0.9;
             break;

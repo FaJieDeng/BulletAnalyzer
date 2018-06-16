@@ -12,7 +12,9 @@
 #import "BAGiftModel.h"
 #import "BARoomModel.h"
 #import "MJExtension.h"
+#import "BARoomGiftModel.h"
 #import "BAAnalyzerCenter.h"
+#import "BAReportModel.h"
 
 @implementation BATransModelTool
 
@@ -96,9 +98,38 @@
                 
                 BAGiftModel *giftModel = [BAGiftModel mj_objectWithKeyValues:dic];
                 
-                if (!((giftModel.rid.integerValue != giftModel.drid.integerValue) && (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane))) { //别的房间火箭广播消息过滤掉
+                BARoomGiftModel *roomGiftModel = [BAAnalyzerCenter defaultCenter].giftModelDic[giftModel.gfid];
+                if (roomGiftModel) {
                     
-                    if (giftModel.nn.length) { //没有用户名的礼物 放弃
+                    if (roomGiftModel.type.integerValue == 1) {
+                        giftModel.giftType = BAGiftTypeFishBall;
+                    } else {
+                        CGFloat giftValue = roomGiftModel.pc.floatValue;
+                        if (giftValue == 0) {
+                            giftModel.giftType = BAGiftTypeFreeGift;
+                        } else if (fabs(giftValue - 0.5) < 2) {
+                            giftModel.giftType = BAGiftTypeCostGift;
+                        } else if (fabs(giftValue - 6) < 2) {
+                            giftModel.giftType = BAGiftTypeCard;
+                        } else if (fabs(giftValue - 100) < 20) {
+                            giftModel.giftType = BAGiftTypePlane;
+                        } else if (fabs(giftValue - 500) < 100) {
+                            giftModel.giftType = BAGiftTypeRocket;
+                        } else if (fabs(giftValue - 2000) < 1001) {
+                            giftModel.giftType = BAGiftTypeRocket;
+                            giftModel.superRocket = YES;
+                        }
+                    }
+                } else {
+                    giftModel.giftType = BAGiftTypeFreeGift;
+                }
+                
+                if (!((giftModel.rid.integerValue != [BAAnalyzerCenter defaultCenter].analyzingReportModel.roomId.integerValue) && giftModel.giftType == BAGiftTypeRocket)) { //别的房间火箭广播消息过滤掉
+                    
+                    //去掉重复消息
+                    BOOL doubleMessage = (giftModel.giftType == BAGiftTypeRocket || giftModel.giftType == BAGiftTypePlane) && !giftModel.drid;
+                    
+                    if (giftModel.nn.length && !doubleMessage) { //没有用户名的礼物 放弃
                         
                         if (!ignore) { //若不忽略免费礼物
                             

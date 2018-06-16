@@ -20,6 +20,7 @@
 #import "Segmentor.h"
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
+#import "BARoomGiftModel.h"
 
 static NSString *const BACompletedReport = @"completedReport"; //完成表
 static NSString *const BAAnalyzingReport = @"AnalyzingReport"; //进行表
@@ -36,8 +37,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 @interface BAAnalyzerCenter()
 @property (nonatomic, strong) FMDatabaseQueue *dataBaseQueue;
-@property (nonatomic, retain) dispatch_queue_t serialQueue;
-@property (nonatomic, strong) BAReportModel *analyzingReportModel; //正在分析的报告
+@property (nonatomic, strong) dispatch_queue_t serialQueue;
 
 @property (nonatomic, strong, readonly) NSMutableArray *bulletsArray; //弹幕数组
 @property (nonatomic, strong, readonly) NSMutableArray *wordsArray;   //单词数组
@@ -97,6 +97,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         _userFishBallCountArray = [NSMutableArray array];
         _giftValueArray = [NSMutableArray array];
         _giftUserBulletArray = [NSMutableArray array];
+        _giftModelDic = [NSMutableDictionary dictionary];
         
         //初始化近似度计算的句子
         _sentenceArray = [NSMutableArray array];
@@ -251,6 +252,8 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     //获取房间信息
     [BAHttpTool getRoomInfoWithParams:params success:^(BARoomModel *roomModel) {
         
+        [self updateGiftInfo:roomModel.gift];
+        
         if (roomModel.room_status.integerValue == 2) {
     
             [BATool showHUDWithText:@"主播已下播" ToView:BAKeyWindow];
@@ -261,7 +264,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
         }
         
         if (roomModel.online.integerValue > 1000000) {
-            [BASocketTool defaultSocket].ignoreFreeGift = YES;
+            //[BASocketTool defaultSocket].ignoreFreeGift = YES;
         }
         
         _analyzingReportModel.fansCount = roomModel.fans_num;
@@ -304,6 +307,23 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
 
 #pragma mark - giftAnalyzer
 /**
+ 更新礼物信息
+ 
+ @param giftArray 礼物信息数组
+ */
+- (void)updateGiftInfo:(NSArray *)giftArray {
+    
+    dispatch_async(_serialQueue, ^{
+        for (BARoomGiftModel *roomGiftModel in giftArray) {
+            if (roomGiftModel.ID) {
+                _giftModelDic[roomGiftModel.ID] = roomGiftModel;
+            }
+        }
+    });
+}
+
+
+/**
  获取到礼物
  */
 - (void)gift:(NSNotification *)sender{
@@ -324,6 +344,7 @@ static NSString *const BASearchHistoryData = @"searchHistoryData"; //搜索历�
     dispatch_async(_serialQueue, ^{
             
         for (BAGiftModel *obj in giftModelArray) {
+
             switch (obj.giftType) {
                 case BAGiftTypeFishBall:
                     
