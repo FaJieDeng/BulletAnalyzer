@@ -58,7 +58,7 @@
 
 ![](http://osnabh9h1.bkt.clouddn.com/17-9-11/3640152.jpg)
     
-    [可交互动画图表相关](https://juejin.im/post/59b5efec6fb9a00a6b6e40d0)
+   [可交互动画图表相关](https://juejin.im/post/59b5efec6fb9a00a6b6e40d0)
 
     整个App主要运用到的技术: Socket连接(自定义协议),
     CoreGraphics绘图, CoreAnimation动画, 多线程, 数据库等..
