@@ -408,7 +408,11 @@
             [BATool showHUDWithText:@"查看报告需要连接三分钟以上!" ToView:BAKeyWindow];
             return;
         }
-        
+        if (selfWeak.reportModel.bulletsArray.count < 1) {
+            // TODO: will crash
+            NSLog(@"bulletsArray is empty");
+            return;
+        }
         BAReportViewController *bulletVC = [[BAReportViewController alloc] init];
         bulletVC.reportModel = selfWeak.reportModel;
         
